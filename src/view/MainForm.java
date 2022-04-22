@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainForm extends javax.swing.JFrame {
 
@@ -267,23 +268,22 @@ public class MainForm extends javax.swing.JFrame {
 
     public void Mentes() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("/dokumentumok/BlackJackAlap"));
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogTitle("Megnyitás");
-        int retrival = fileChooser.showSaveDialog(null);
-
-        if (retrival == JFileChooser.APPROVE_OPTION) {
-            try {
-                FileWriter fw = new FileWriter(fileChooser.getSelectedFile() + ".txt");
-                fw.write(fw.toString());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.jpg, *.gif", "*.txt"));
+        int result = fileChooser.showOpenDialog(this);
+ 
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            KerdesFelugro(selectedFile.getName());
         }
     }
     
-    public void KerdesFelugro() {
+    public void KerdesFelugro(String szoveg) {
         ImageIcon icon = new ImageIcon(MainForm.class.getResource("res/ikon.jpg"));
-        int gomb = JOptionPane.showConfirmDialog(rootPane, "útvonal...", "Kérdés", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon);
+        int gomb = JOptionPane.showConfirmDialog(rootPane, szoveg, "Kérdés", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, icon);
         if (gomb == JOptionPane.OK_OPTION) {
             System.exit(0);
         }
